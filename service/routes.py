@@ -68,7 +68,8 @@ def list_accounts():
     List all the accounts
     This endpoint will list all the accounts that exists in the database.
     """
-    return make_response(null, status.HTTP_200_OK,[])
+    message=jsonify("[]")
+    return make_response(message, status.HTTP_200_OK,{})
 
 ######################################################################
 # READ AN ACCOUNT
