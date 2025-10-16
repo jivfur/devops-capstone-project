@@ -131,7 +131,9 @@ class TestAccountService(TestCase):
         response=self.client.get("/accounts") 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.get_json()),5)
-            
+
     def test_list_accounts_empty(self):
         """ It should get empty list because no accounts were created"""
-        
+        response=self.client.get("/accounts") 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.get_json()),0)
