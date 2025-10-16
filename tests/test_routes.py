@@ -158,7 +158,16 @@ class TestAccountService(TestCase):
 
 
     def test_read(self):
-        pass
+        account = AccountFactory()
+        account.id = 1
+        create_account = self.client.post(
+            BASE_URL,
+            json=account.serialize(),
+            content_type="application/json"
+        )
+
+        retrieved_account = self.client.get("/accounts/1")
+        print(retrieved_account.get_json())
     
     def test_read_empty(self):
         response=self.client.get("/accounts/1")
