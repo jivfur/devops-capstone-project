@@ -106,10 +106,10 @@ def read_accounts(id):
         return make_response(jsonify(response),status.HTTP_200_OK)
     except Exception as e:
         error_message={
-            "message": "Internal Server Error: Could not retrieve accounts.",
+            "message": "Internal Server Error: Could not retrieve account.",
             "account":{}
         }
-        return make_response(jsonify(error_message),status.HTTP_200_OK)
+        return make_response(jsonify(error_message),status.HTTP_400_BAD_REQUEST)
     finally:
         pass
 
