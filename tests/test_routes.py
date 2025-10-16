@@ -155,3 +155,12 @@ class TestAccountService(TestCase):
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
+
+
+    def test_read(self):
+        pass
+    
+    def test_read_empty(self):
+        response=self.client.get("/accounts/1")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertDictEqual(response.get_json()["account"],{})
