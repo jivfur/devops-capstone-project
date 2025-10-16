@@ -8,6 +8,7 @@ Test cases can be run with the following:
 import os
 import logging
 from unittest import TestCase
+from unittest.mock import patch
 from tests.factories import AccountFactory
 from service.common import status  # HTTP Status Codes
 from service.models import db, Account, init_db
@@ -124,3 +125,33 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
+    def test_list_accounts(self):
+        """ It should list all the accounts after created"""
+        #it creates in bulk
+        data = self._create_accounts(5)
+        response=self.client.get("/accounts") 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.get_json()["len"],5)
+
+    def test_list_accounts_empty(self):
+        """ It should get empty list because no accounts were created"""
+        response=self.client.get("/accounts") 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.get_json()["len"],0)
+
+    @patch('service.models.Account.all')
+    def test_list_accounts_handles_database_error(self, mock_account_all):
+        """
+        Tests that the list_accounts function correctly handles and
+        responds to a database exception with a 500 status code.
+        """
+        mock_account_all.side_effect = Exception("Simulated DB Connection Error")
+
+        response = self.client.get("/accounts")
+
+        self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
+
+        expected_error="Internal Server Error: Could not retrieve accounts."
+        self.assertEqual(response.get_json()["message"], expected_error)
+        
+        mock_account_all.assert_called_once()
