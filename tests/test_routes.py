@@ -159,15 +159,22 @@ class TestAccountService(TestCase):
 
     def test_read(self):
         account = AccountFactory()
-        account.id = 1
-        create_account = self.client.post(
+        create_response = self.client.post(
             BASE_URL,
             json=account.serialize(),
             content_type="application/json"
         )
 
-        retrieved_account = self.client.get("/accounts/1")
-        print(retrieved_account.get_json())
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+        id=create_response.get_json()["id"]
+        response = self.client.get(f"/accounts/{id}")
+        retrieved_account = response.get_json()["account"]
+        self.assertEqual(retrieved_account["name"], account.name)
+        self.assertEqual(retrieved_account["email"], account.email)
+        self.assertEqual(retrieved_account["address"], account.address)
+        self.assertEqual(retrieved_account["phone_number"], account.phone_number)
+        self.assertEqual(retrieved_account["date_joined"], str(account.date_joined))
+        
     
     def test_read_empty(self):
         response=self.client.get("/accounts/1")
