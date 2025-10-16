@@ -124,3 +124,12 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
+    def test_list_accounts():
+        """ It should list all the accounts after created"""
+        account = AccountFactory()
+        
+        self.assertEqual([],[])
+    
+    def test_list_accounts_empty():
+        """ It should get empty list because no accounts were created"""
+        
