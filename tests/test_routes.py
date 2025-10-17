@@ -202,3 +202,27 @@ class TestAccountService(TestCase):
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
+
+
+    def test_update_happy_path(self):
+        """
+        This test updates one specific account with Id id
+        """
+        #Creates the account
+        account = AccountFactory()
+        create_response = self.client.post(
+            BASE_URL,
+            json=account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+        original_id=create_response.get_json()["id"]
+        #updates the account
+        updated_account = AccountFactory(id=original_id)
+        url = f"{BASE_URL}/{original_id}"
+        updated_response=self.client.put(
+          url,
+          json=updated_account.serialize(),
+          content_type="application/json"
+        )
+        self.assertEqual(updated_response.status_code,status.HTTP_200_OK)

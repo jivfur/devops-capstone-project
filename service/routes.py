@@ -115,7 +115,13 @@ def read_accounts(id):
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-# ... place you code here to UPDATE an account ...
+@app.route("/accounts/<int:id>",methods=["PUT"])
+def update_account(id):
+    updated_account={
+        "account":{}
+    }
+    return make_response(jsonify(updated_account),status.HTTP_200_OK)
+
 
 
 ######################################################################
