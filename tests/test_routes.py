@@ -202,3 +202,46 @@ class TestAccountService(TestCase):
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
+
+
+    def test_update_happy_path(self):
+        """
+        This test updates one specific account with Id id
+        """
+        #Creates the account
+        account = AccountFactory()
+        create_response = self.client.post(
+            BASE_URL,
+            json=account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+        original_id=create_response.get_json()["id"]
+        #updates the account
+        updated_account = AccountFactory(id=original_id)
+        url = f"{BASE_URL}/{original_id}"
+        updated_response=self.client.put(
+          url,
+          json=updated_account.serialize(),
+          content_type="application/json"
+        )
+
+        self.assertEqual(updated_response.status_code,status.HTTP_200_OK)
+        self.assertEqual(updated_response.get_json()["name"], updated_account.name)
+        self.assertEqual(updated_response.get_json()["email"], updated_account.email)
+        self.assertEqual(updated_response.get_json()["address"], updated_account.address)
+        self.assertEqual(updated_response.get_json()["phone_number"], updated_account.phone_number)
+        self.assertEqual(updated_response.get_json()["date_joined"], str(updated_account.date_joined))   
+    
+    def test_update_unexisting_id(self):
+        """
+        Test to try to update an unexisting account
+        """
+        account = AccountFactory()
+        url = f"{BASE_URL}/{account.id}"
+        updated_response=self.client.put(
+          url,
+          json=account.serialize(),
+          content_type="application/json"
+        )
+        self.assertEqual(updated_response.status_code,status.HTTP_404_NOT_FOUND)
