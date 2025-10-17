@@ -262,7 +262,7 @@ class TestAccountService(TestCase):
         #updates the account
         url = f"{BASE_URL}/{original_id}"
         delete_response=self.client.delete(url)
-        self.assertEqual(delete_response,status.HTTP_200_OK)
+        self.assertEqual(delete_response.status_code,status.HTTP_200_OK)
     
     def test_delete_unexisting_account(self):
         """
@@ -271,4 +271,4 @@ class TestAccountService(TestCase):
         #updates the account
         url = f"{BASE_URL}/1"
         delete_response=self.client.delete(url)
-        self.assertEqual(delete_response,status.HTTP_404_NOT_FOUND)
+        self.assertEqual(delete_response.status_code,status.HTTP_404_NOT_FOUND)

@@ -140,9 +140,9 @@ def delete_account(id):
     """
     account = Account.find(id)
     if not account:
-        return status.HTTP_404_NOT_FOUND
+        return make_response(jsonify({}),status.HTTP_404_NOT_FOUND)
     account.delete()
-    return status.HTTP_200_OK
+    return make_response(jsonify({}),status.HTTP_200_OK)
 
 
 ######################################################################
