@@ -138,7 +138,11 @@ def delete_account(id):
     """
     Delete an account with Id
     """
-    pass
+    account = Account.find(id)
+    if not account:
+        return status.HTTP_404_NOT_FOUND
+    account.delete()
+    return status.HTTP_200_OK
 
 
 ######################################################################
