@@ -85,14 +85,30 @@ def list_accounts():
             jsonify(error_message), 
             status.HTTP_400_BAD_REQUEST
         )
-    finally:
-        pass
+    
 
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
 
-# ... place you code here to READ an account ...
+@app.route("/accounts/<int:id>", methods=["GET"])
+def read_accounts(id):
+    """
+    Read one account with the id
+    This endpoit will find the account with the id sent as parameter.
+    """
+    try:
+        account = Account.find(id)
+        response = {
+            "account":account.serialize()
+        }
+        return make_response(jsonify(response),status.HTTP_200_OK)
+    except Exception as e:
+        error_message={
+            "message": "Internal Server Error: Could not retrieve account.",
+            "account":{}
+        }
+        return make_response(jsonify(error_message),status.HTTP_400_BAD_REQUEST)
 
 
 ######################################################################
