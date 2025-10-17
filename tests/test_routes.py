@@ -225,12 +225,13 @@ class TestAccountService(TestCase):
           json=updated_account.serialize(),
           content_type="application/json"
         )
+
         self.assertEqual(updated_response.status_code,status.HTTP_200_OK)
-        self.assertEqual(updated_response["name"], updated_account.name)
-        self.assertEqual(updated_response["email"], updated_account.email)
-        self.assertEqual(updated_response["address"], updated_account.address)
-        self.assertEqual(updated_response["phone_number"], updated_account.phone_number)
-        self.assertEqual(updated_response["date_joined"], str(updated_account.date_joined))   
+        self.assertEqual(updated_response.get_json()["name"], updated_account.name)
+        self.assertEqual(updated_response.get_json()["email"], updated_account.email)
+        self.assertEqual(updated_response.get_json()["address"], updated_account.address)
+        self.assertEqual(updated_response.get_json()["phone_number"], updated_account.phone_number)
+        self.assertEqual(updated_response.get_json()["date_joined"], str(updated_account.date_joined))   
     
     def test_update_unexisting_id(self):
         """
@@ -243,4 +244,4 @@ class TestAccountService(TestCase):
           json=account.serialize(),
           content_type="application/json"
         )
-        self.assertEqual(updated_response.status_code,status.HTTP_200_OK) 
+        self.assertEqual(updated_response.status_code,status.HTTP_404_NOT_FOUND)

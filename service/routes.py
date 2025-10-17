@@ -117,10 +117,15 @@ def read_accounts(id):
 
 @app.route("/accounts/<int:id>",methods=["PUT"])
 def update_account(id):
-    updated_account={
-        "account":{}
-    }
-    return make_response(jsonify(updated_account),status.HTTP_200_OK)
+    
+    account = Account.find(id)
+    if not account:
+        return make_response(jsonify({}),status.HTTP_404_NOT_FOUND)
+    
+    account.deserialize(request.get_json())
+    account.update()
+
+    return make_response(jsonify(account.serialize()), status.HTTP_200_OK)
 
 
 
