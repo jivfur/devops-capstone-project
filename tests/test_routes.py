@@ -238,9 +238,9 @@ class TestAccountService(TestCase):
         """
         account = AccountFactory()
         url = f"{BASE_URL}/{account.id}"
-        print(url)
         updated_response=self.client.put(
           url,
-          json=updated_account.serialize(),
+          json=account.serialize(),
           content_type="application/json"
-        )    
+        )
+        self.assertEqual(updated_response.status_code,status.HTTP_200_OK) 
