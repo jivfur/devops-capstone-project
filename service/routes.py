@@ -85,8 +85,7 @@ def list_accounts():
             jsonify(error_message), 
             status.HTTP_400_BAD_REQUEST
         )
-    finally:
-        pass
+    
 
 ######################################################################
 # READ AN ACCOUNT
@@ -110,8 +109,6 @@ def read_accounts(id):
             "account":{}
         }
         return make_response(jsonify(error_message),status.HTTP_400_BAD_REQUEST)
-    finally:
-        pass
 
 
 ######################################################################
