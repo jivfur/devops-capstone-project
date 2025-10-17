@@ -226,3 +226,8 @@ class TestAccountService(TestCase):
           content_type="application/json"
         )
         self.assertEqual(updated_response.status_code,status.HTTP_200_OK)
+        self.assertEqual(updated_response["name"], updated_account.name)
+        self.assertEqual(updated_response["email"], updated_account.email)
+        self.assertEqual(updated_response["address"], updated_account.address)
+        self.assertEqual(updated_response["phone_number"], updated_account.phone_number)
+        self.assertEqual(updated_response["date_joined"], str(updated_account.date_joined))
