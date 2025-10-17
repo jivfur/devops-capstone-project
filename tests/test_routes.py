@@ -231,3 +231,18 @@ class TestAccountService(TestCase):
         self.assertEqual(updated_response["address"], updated_account.address)
         self.assertEqual(updated_response["phone_number"], updated_account.phone_number)
         self.assertEqual(updated_response["date_joined"], str(updated_account.date_joined))
+    def testU_update_id_not_found()self:
+    
+    def test_update_unexisting_id(self):        """
+        Test to try to update an unexisting account
+        """
+        account = AccountFactory()
+        url = f"{BASE_URL}/{account.id}"
+        print(url)
+        updated_response=self.client.put(
+          url,
+          json=updated_account.serialize(),
+          content_type="application/json"
+        )
+
+    
