@@ -268,4 +268,7 @@ class TestAccountService(TestCase):
         """
         This test tries to delete an unexisting account.
         """
-        pass
+        #updates the account
+        url = f"{BASE_URL}/1"
+        delete_response=self.client.delete(url)
+        self.assertEqual(delete_response.status_code,status.HTTP_404_NOT_FOUND)
