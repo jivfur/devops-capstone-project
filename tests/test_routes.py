@@ -143,7 +143,7 @@ class TestAccountService(TestCase):
     def test_list_accounts_handles_database_error(self, mock_account_all):
         """
         Tests that the list_accounts function correctly handles and
-        responds to a database exception with a 500 status code.
+        responds to a database exception with a 400 status code.
         """
         mock_account_all.side_effect = Exception("Simulated DB Connection Error")
 
@@ -151,7 +151,7 @@ class TestAccountService(TestCase):
 
         self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
 
-        expected_error="Internal Server Error: Could not retrieve accounts."
+        expected_error="Internal Server Error: Could not retrieve accounts.Simulated DB Connection Errors"
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
@@ -192,13 +192,13 @@ class TestAccountService(TestCase):
         Tests that the read function correctly handles and
         responds to a database exception with a 400 status code.
         """
-        mock_account_all.side_effect = Exception("Simulated DB Connection Error")
+        mock_account_all.side_effect = Exception("Simulated DB Connection Error.")
 
         response = self.client.get("/accounts/1")
 
         self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
 
-        expected_error="Internal Server Error: Could not retrieve account."
+        expected_error="Internal Server Error: Could not retrieve account.Simulated DB Connection Error "
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
