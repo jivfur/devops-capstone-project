@@ -151,7 +151,7 @@ class TestAccountService(TestCase):
 
         self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
 
-        expected_error="Internal Server Error: Could not retrieve accounts.Simulated DB Connection Errors"
+        expected_error="Internal Server Error: Could not retrieve accounts.Simulated DB Connection Error"
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
@@ -198,7 +198,7 @@ class TestAccountService(TestCase):
 
         self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
 
-        expected_error="Internal Server Error: Could not retrieve account.Simulated DB Connection Error "
+        expected_error="Internal Server Error: Could not retrieve account.Simulated DB Connection Error."
         self.assertEqual(response.get_json()["message"], expected_error)
         
         mock_account_all.assert_called_once()
