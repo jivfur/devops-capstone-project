@@ -61,35 +61,35 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
-# ... place you code here to LIST accounts ...
-@app.route("/accounts",methods=["GET"])
+
+@app.route("/accounts", methods=["GET"])
 def list_accounts():
     """
     List all the accounts
     This endpoint will list all the accounts that exists in the database.
     """
     try:
-            accounts = Account.all()
-            account_list = [account.serialize() for account in accounts]
-            response_body = {
-                "len":len(account_list),
-                "accounts":account_list
-            }
-            return make_response(jsonify(response_body),status.HTTP_200_OK)
+        accounts = Account.all()
+        account_list = [account.serialize() for account in accounts]
+        response_body = {
+            "len": len(account_list),
+            "accounts": account_list
+        }
+        return make_response(jsonify(response_body), status.HTTP_200_OK)
     except Exception as e:
         error_message = {
-            "message": "Internal Server Error: Could not retrieve accounts.",
-            "accounts":[],
-            "len":0}
+            "message": "Internal Server Error: Could not retrieve accounts."+str(e),
+            "accounts": [],
+            "len": 0}
         return make_response(
-            jsonify(error_message), 
+            jsonify(error_message),
             status.HTTP_400_BAD_REQUEST
         )
-    
 
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
+
 
 @app.route("/accounts/<int:id>", methods=["GET"])
 def read_accounts(id):
@@ -100,49 +100,49 @@ def read_accounts(id):
     try:
         account = Account.find(id)
         response = {
-            "account":account.serialize()
+            "account": account.serialize()
         }
-        return make_response(jsonify(response),status.HTTP_200_OK)
+        return make_response(jsonify(response), status.HTTP_200_OK)
     except Exception as e:
-        error_message={
-            "message": "Internal Server Error: Could not retrieve account.",
-            "account":{}
+        error_message = {
+            "message": "Internal Server Error: Could not retrieve account."+str(e),
+            "account": {}
         }
-        return make_response(jsonify(error_message),status.HTTP_400_BAD_REQUEST)
+        return make_response(jsonify(error_message), status.HTTP_400_BAD_REQUEST)
 
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
 
-@app.route("/accounts/<int:id>",methods=["PUT"])
+@app.route("/accounts/<int:id>", methods=["PUT"])
 def update_account(id):
-    
+    """
+     Update the Account with Id
+    """
     account = Account.find(id)
     if not account:
-        return make_response(jsonify({}),status.HTTP_404_NOT_FOUND)
-    
+        return make_response(jsonify({}), status.HTTP_404_NOT_FOUND)
     account.deserialize(request.get_json())
     account.update()
 
     return make_response(jsonify(account.serialize()), status.HTTP_200_OK)
 
-
-
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
 
-@app.route("/accounts/<int:id>",methods=["DELETE"])
+
+@app.route("/accounts/<int:id>", methods=["DELETE"])
 def delete_account(id):
     """
     Delete an account with Id
     """
     account = Account.find(id)
     if not account:
-        return make_response(jsonify({}),status.HTTP_404_NOT_FOUND)
+        return make_response(jsonify({}), status.HTTP_404_NOT_FOUND)
     account.delete()
-    return make_response(jsonify({}),status.HTTP_200_OK)
+    return make_response(jsonify({}), status.HTTP_200_OK)
 
 
 ######################################################################
